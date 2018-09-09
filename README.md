@@ -15,7 +15,7 @@ Cave Tester is a lightweight testing library that help you manage your database 
 
 ## Quickstart
 
-```
+```C#
 public class FooTests : Tester
 {
 	private readonly DbContext _dbContext;
