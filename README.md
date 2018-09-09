@@ -51,4 +51,4 @@ public class Person
 
 ## Example
 
-See a complete example [here](https://github.com/asagues/CaveTester/master/blob/CaveTester.Example)
+See a complete example [here](https://github.com/asagues/CaveTester/tree/master/CaveTester.Example)
