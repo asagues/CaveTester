@@ -6,7 +6,7 @@ Cave Tester is a lightweight testing library that help you manage your database 
 
 * Automatic database save and restore
 * Determinist id generator
-* Rules sets for object generation with [Bogus] https://github.com/bchavez/Bogus
+* Rules sets for object generation with [Bogus](https://github.com/bchavez/Bogus)
 
 ## Planned features
 
@@ -51,4 +51,4 @@ public class Person
 
 ## Example
 
-See a complete example [here] https://github.com/asagues/CaveTester/master/blob/CaveTester.Example
+See a complete example [here](https://github.com/asagues/CaveTester/master/blob/CaveTester.Example)
