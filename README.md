@@ -23,9 +23,9 @@ public class FooTests : Tester
 	public FooTests()
 	{
 		// init your context here
-		
+
 		// Create a snapshot of the database before the test begin
-            	SaveHandler.Add(new SqlServerDbSnapshot(_dbContext.Database));
+		SaveHandler.Add(new SqlServerDbSnapshot(_dbContext.Database));
 	}
 
 	[Fact]
