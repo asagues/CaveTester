@@ -22,16 +22,16 @@ public class FooTests : Tester
 
 	public FooTests()
 	{
-		//init your context here
-
+		// init your context here
+		
 		// Create a snapshot of the database before the test begin
-        SaveHandler.Add(new SqlServerDbSnapshot(_dbContext.Database));
+            	SaveHandler.Add(new SqlServerDbSnapshot(_dbContext.Database));
 	}
 
 	[Fact]
 	public async Task ShouldFoo()
 	{
-		//Generate 5 Person with a random name
+		// Generate 5 Person with a random name
 		await _dbContext.Generate<Person>(5, (faker, person) => person.Name = faker.Lorem.Word())
 				 .SaveChangesAsync();
 
