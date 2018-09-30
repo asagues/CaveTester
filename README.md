@@ -52,3 +52,7 @@ public class Person
 ## Example
 
 See a complete example [here](https://github.com/asagues/CaveTester/tree/master/CaveTester.Example)
+
+## Tests
+
+To build and run the tests you need to create a database using the script CaveTester.Tests/create_database.sql and configure the connection string CaveTester.Tests/DbSaverTests.cs

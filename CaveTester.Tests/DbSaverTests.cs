@@ -15,9 +15,10 @@ namespace CaveTester.Tests
         {
             var dbContextOptions = new DbContextOptionsBuilder<TestContext>()
                 .EnableSensitiveDataLogging()
-                .UseSqlServer("Server=(localdb)\\CaveTester;Database=tests;Trusted_Connection=True;MultipleActiveResultSets=true");
+                .UseSqlServer("Server=(localdb)\\CaveTester;Database=CaveTester;Trusted_Connection=True;MultipleActiveResultSets=true");
 
             var context = new TestContext(dbContextOptions.Options);
+            context.Database.EnsureCreated();
 
             var save = new SqlServerDbSnapshot(context.Database);
             save.Initialize();
