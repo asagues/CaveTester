@@ -51,6 +51,8 @@ namespace CaveTester.Example
             //Assert
             var haveDefectiveTurret = await dbContext.Turrets.AnyAsync(turret => turret.IsDefective);
             haveDefectiveTurret.Should().BeTrue();
+
+            saveHandler.RestoreAll();
         }
     }
 }
