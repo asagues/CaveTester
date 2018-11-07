@@ -8,7 +8,7 @@ namespace CaveTester.Bogus.RuleSet
             where T : class;
     }
 
-    //Bogus already define IRuleSet<T>
+    //Bogus already defines IRuleSet<T>
     public interface IRulesFor<T>
         where T : class
     {

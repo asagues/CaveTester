@@ -12,7 +12,7 @@ namespace CaveTester.Core
         private readonly IDictionary<Type, int> _ids = new Dictionary<Type, int>();
 
         /// <summary>
-        /// Generate a new id. Generated ids are guaranteed to be unique and sequentials for <typeparam name="T">T</typeparam>
+        /// Generate a new id. Generated ids are guaranteed to be unique and sequential for <typeparam name="T">T</typeparam>
         /// </summary>
         /// <returns>Returns the next id for T</returns>
         public int New<T>()
@@ -33,7 +33,7 @@ namespace CaveTester.Core
         public void Reset<T>() => _ids.Remove(typeof(T));
 
         /// <summary>
-        /// Reset all ids counters
+        /// Reset all id counters
         /// </summary>
         public void Reset() => _ids.Clear();
     }

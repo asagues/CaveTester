@@ -19,10 +19,10 @@ namespace CaveTester.Example
             Context = new ApertureContext(dbContextOptions.Options);
 
             //Save the database
-            //The database will automaticly be restored from this save when the test end
+            //The database will automatically be restored from this save when the test end
             SaveHandler.Add(new SqlServerDbSnapshot(Context.Database));
 
-            //Set wich rule set to use when generating objects
+            //Set which rule set to use when generating objects
             RuleSetHandler.RuleSet = new ApertureRuleSet();
         }
     }
