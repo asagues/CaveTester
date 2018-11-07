@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CaveTester.Core.DbSave;
 using FluentAssertions;
@@ -24,11 +24,8 @@ namespace CaveTester.Tests
             save.Initialize();
             save.Create();
 
-            var entity = new Turret
-            {
-                Id = 1,
-                IsDefective = true,
-            };
+            var entity = new Turret { IsDefective = true, };
+
             await context.Turrets.AddAsync(entity);
             await context.SaveChangesAsync();
 
