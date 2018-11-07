@@ -27,16 +27,16 @@ namespace CaveTester.Example
 
             //Create a snapshot of the database
             var saveHandler = new DbSaveHandler();
-            saveHandler.Add(new SqlServerDbSnapshot(dbContext.Database));
+            await saveHandler.AddAsync(new SqlServerDbSnapshot(dbContext.Database));
 
-            //Set wich rule set to use when generating objects
+            //Set which rule set to use when generating objects
             RuleSetHandler.RuleSet = new ApertureRuleSet();
 
             var idGenerator = new IdGenerator();
 
             var turretService = new TurretService(dbContext);
             // Generate 42 turrets
-            // The ruleset set in ApertureTester constructor is applied, so the turrets names will have a value
+            // The RuleSet set in ApertureTester constructor is applied, so the turrets names will have a value
             await dbContext.Generate<Turret>(42, (faker, turret) =>
                 {
                     //Get a new unique turret id
@@ -52,7 +52,7 @@ namespace CaveTester.Example
             var haveDefectiveTurret = await dbContext.Turrets.AnyAsync(turret => turret.IsDefective);
             haveDefectiveTurret.Should().BeTrue();
 
-            saveHandler.RestoreAll();
+            await saveHandler.RestoreAllAsync();
         }
     }
 }

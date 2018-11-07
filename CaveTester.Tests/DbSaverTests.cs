@@ -21,15 +21,15 @@ namespace CaveTester.Tests
             context.Database.EnsureCreated();
 
             var save = new SqlServerDbSnapshot(context.Database);
-            save.Initialize();
-            save.Create();
+            await save.InitializeAsync();
+            await save.CreateAsync();
 
             var entity = new Turret { IsDefective = true, };
 
             await context.Turrets.AddAsync(entity);
             await context.SaveChangesAsync();
 
-            save.Restore();
+            await save.RestoreAsync();
 
             var results = await context.Turrets.ToListAsync();
 

@@ -1,5 +1,6 @@
 using System.Data.SqlClient;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -41,11 +42,34 @@ namespace CaveTester.Core.DbSave
         }
 
         /// <inheritdoc />
+        public async Task InitializeAsync()
+        {
+            //Try to restore from snapshot to ensure the database is in a clean state, then delete it
+            try
+            {
+                await RestoreAsync();
+                await DeleteAsync();
+            }
+            catch (SqlException)
+            {
+                //Exceptions are expected when there is not snapshot to restore
+            }
+        }
+
+        /// <inheritdoc />
         public void Create()
         {
             _database.ExecuteSqlCommand($"CREATE DATABASE {SnapshotName} ON\r\n"
                                         + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
                                         + $"AS SNAPSHOT OF {_databaseName};\r\n");
+        }
+
+        /// <inheritdoc />
+        public Task CreateAsync()
+        {
+            return _database.ExecuteSqlCommandAsync($"CREATE DATABASE {SnapshotName} ON\r\n"
+                                                    + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
+                                                    + $"AS SNAPSHOT OF {_databaseName};\r\n");
         }
 
         /// <inheritdoc />
@@ -59,9 +83,28 @@ namespace CaveTester.Core.DbSave
         }
 
         /// <inheritdoc />
+        public Task RestoreAsync()
+        {
+            return _database.ExecuteSqlCommandAsync("USE MASTER;\r\n"
+                                                    + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
+                                                    + $"RESTORE DATABASE {_databaseName} FROM\r\n"
+                                                    + $"DATABASE_SNAPSHOT = '{SnapshotName}';\r\n"
+                                                    + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+        }
+
+        /// <inheritdoc />
         public void Delete()
         {
             _database.ExecuteSqlCommand("DROP DATABASE " + SnapshotName);
+
+            if (File.Exists(SnapshotPath))
+                File.Delete(SnapshotPath); // delete orphan snapshot file
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteAsync()
+        {
+            await _database.ExecuteSqlCommandAsync("DROP DATABASE " + SnapshotName);
 
             if (File.Exists(SnapshotPath))
                 File.Delete(SnapshotPath); // delete orphan snapshot file

@@ -1,5 +1,6 @@
 using System.Data.SqlClient;
 using System.IO;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
@@ -25,7 +26,6 @@ namespace CaveTester.Core.DbSave
             Name = database.GetDbConnection().DataSource;
         }
 
-
         /// <inheritdoc />
         public void Initialize()
         {
@@ -42,11 +42,34 @@ namespace CaveTester.Core.DbSave
         }
 
         /// <inheritdoc />
+        public async Task InitializeAsync()
+        {
+            //Try to restore from backup to ensure the database is in a clean state, then delete it
+            try
+            {
+                await RestoreAsync();
+                await DeleteAsync();
+            }
+            catch (SqlException)
+            {
+                //Exceptions are expected when there is not snapshot to restore
+            }
+        }
+
+        /// <inheritdoc />
         public void Create()
         {
             _database.ExecuteSqlCommand($"USE {_databaseName};"
                                         + $"BACKUP DATABASE {_databaseName} TO DISK = '{Path}' "
                                         + $"WITH FORMAT, MEDIANAME = 'Z_SQLServerBackups', NAME = '{BackupName}';");
+        }
+
+        /// <inheritdoc />
+        public Task CreateAsync()
+        {
+            return _database.ExecuteSqlCommandAsync($"USE {_databaseName};"
+                                                    + $"BACKUP DATABASE {_databaseName} TO DISK = '{Path}' "
+                                                    + $"WITH FORMAT, MEDIANAME = 'Z_SQLServerBackups', NAME = '{BackupName}';");
         }
 
         /// <inheritdoc />
@@ -59,10 +82,29 @@ namespace CaveTester.Core.DbSave
         }
 
         /// <inheritdoc />
+        public Task RestoreAsync()
+        {
+            return _database.ExecuteSqlCommandAsync("USE MASTER;\r\n"
+                                                    + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
+                                                    + $"RESTORE DATABASE {_databaseName} FROM DISK = '{Path}'"
+                                                    + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+        }
+
+        /// <inheritdoc />
         public void Delete()
         {
             _database.ExecuteSqlCommand($"IF EXISTS(select * from sys.databases where name='{BackupName}') "
                                         + $"DROP DATABASE {BackupName}");
+
+            if (File.Exists(Path))
+                File.Delete(Path); // delete orphan backup file
+        }
+
+        /// <inheritdoc />
+        public async Task DeleteAsync()
+        {
+            await _database.ExecuteSqlCommandAsync($"IF EXISTS(select * from sys.databases where name='{BackupName}') "
+                                                   + $"DROP DATABASE {BackupName}");
 
             if (File.Exists(Path))
                 File.Delete(Path); // delete orphan backup file
