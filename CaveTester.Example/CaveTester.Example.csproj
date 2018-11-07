@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\CaveTester.Faker\CaveTester.Bogus.csproj" />
-    <ProjectReference Include="..\CaveTester\CaveTester.Core.csproj" />
+    <ProjectReference Include="..\CaveTester.Bogus\CaveTester.Bogus.csproj" />
+    <ProjectReference Include="..\CaveTester.Core\CaveTester.Core.csproj" />
   </ItemGroup>
 
 </Project>

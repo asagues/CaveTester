@@ -15,10 +15,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bogus" Version="24.3.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\CaveTester\CaveTester.Core.csproj" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.4" />
   </ItemGroup>
 
 </Project>
