@@ -1,10 +1,11 @@
 ﻿using Bogus;
+using JetBrains.Annotations;
 
 namespace CaveTester.Bogus.RuleSet
 {
     public interface IRuleSet
     {
-        Faker<T> Apply<T>(Faker<T> faker)
+        [NotNull] Faker<T> Apply<T>([NotNull] Faker<T> faker)
             where T : class;
     }
 
@@ -12,6 +13,6 @@ namespace CaveTester.Bogus.RuleSet
     public interface IRulesFor<T>
         where T : class
     {
-        Faker<T> Apply(Faker<T> faker);
+        [NotNull] Faker<T> Apply([NotNull] Faker<T> faker);
     }
 }
