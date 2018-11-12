@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <Version>1.0.0-beta1</Version>
+    <Version>1.0.0-beta2</Version>
     <PackageProjectUrl>https://github.com/asagues/CaveTester</PackageProjectUrl>
     <RepositoryUrl>https://github.com/asagues/CaveTester</RepositoryUrl>
     <PackageLicenseUrl>https://github.com/asagues/CaveTester/blob/master/LICENSE</PackageLicenseUrl>
@@ -11,6 +11,12 @@
     <Company></Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Description>CaveTester is a lightweight testing library that help you manage your database and generate mock data</Description>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>Database;test</PackageTags>
+    <PackageReleaseNotes>Add an async version for all IDbsave methods
+Add SourceLink support
+Add Jetbrain nullable attributes</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
