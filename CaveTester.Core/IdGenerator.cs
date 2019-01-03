@@ -11,6 +11,13 @@ namespace CaveTester.Core
     {
         private readonly IDictionary<Type, int> _ids = new Dictionary<Type, int>();
 
+        public int StartValue { get; private set; }
+
+        public IdGenerator(int startValue = 1)
+        {
+            StartValue = startValue;
+        }
+
         /// <summary>
         /// Generate a new id. Generated ids are guaranteed to be unique and sequential for <typeparam name="T">T</typeparam>
         /// </summary>
@@ -23,8 +30,8 @@ namespace CaveTester.Core
                 return id;
             }
 
-            _ids.Add(typeof(T), 2);
-            return 1;
+            _ids.Add(typeof(T), StartValue + 1);
+            return StartValue;
         }
 
         /// <summary>
