@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -17,6 +17,8 @@
     <PackageReleaseNotes>Add an async version for all IDbsave methods
 Add SourceLink support
 Add Jetbrain nullable attributes</PackageReleaseNotes>
+    <IncludeSymbols>true</IncludeSymbols>	
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>	
   </PropertyGroup>
 
   <ItemGroup>
