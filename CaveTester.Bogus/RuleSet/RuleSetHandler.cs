@@ -1,7 +1,9 @@
 ﻿using Bogus;
+using JetBrains.Annotations;
 
 namespace CaveTester.Bogus.RuleSet
 {
+    [PublicAPI]
     public static class RuleSetHandler
     {
         public static IRuleSet RuleSet { get; set; } = new RuleSet();

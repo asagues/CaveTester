@@ -1,12 +1,14 @@
 using System.Data.SqlClient;
 using System.IO;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace CaveTester.Core.DbSave
 {
     /// <inheritdoc />
+    [PublicAPI]
     public class SqlServerDbBackup : IDbSave
     {
         public string Name { get; }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace CaveTester.Core
 {
@@ -7,6 +8,7 @@ namespace CaveTester.Core
     /// Determinist id generator
     /// </summary>
     // TODO create an IIdGenerator and handle any kind of id
+    [PublicAPI]
     public sealed class IdGenerator
     {
         private readonly IDictionary<Type, int> _ids = new Dictionary<Type, int>();

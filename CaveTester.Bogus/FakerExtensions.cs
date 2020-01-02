@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 
 namespace CaveTester.Bogus
 {
+    [PublicAPI]
     public static class FakerExtensions
     {
         /// <summary>

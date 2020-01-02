@@ -1,8 +1,10 @@
 using System;
 using CaveTester.Core.DbSave;
+using JetBrains.Annotations;
 
 namespace CaveTester.Core.Tester
 {
+    [PublicAPI]
     public abstract class Tester : IDisposable
     {
         protected readonly IdGenerator IdGenerator = new IdGenerator();

@@ -1,10 +1,12 @@
 using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace CaveTester.Core.DbSave
 {
     //TODO
     //In memory database are assumed to be unique, so there is no need to save/restore
     /// <inheritdoc />
+    [PublicAPI]
     public class InMemoryDbSave : IDbSave
     {
         public InMemoryDbSave(string name)

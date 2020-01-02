@@ -3,16 +3,18 @@ using JetBrains.Annotations;
 
 namespace CaveTester.Bogus.RuleSet
 {
+    [PublicAPI]
     public interface IRuleSet
     {
-        [NotNull] Faker<T> Apply<T>([NotNull] Faker<T> faker)
+        Faker<T> Apply<T>(Faker<T> faker)
             where T : class;
     }
 
     //Bogus already defines IRuleSet<T>
+    [PublicAPI]
     public interface IRulesFor<T>
         where T : class
     {
-        [NotNull] Faker<T> Apply([NotNull] Faker<T> faker);
+        Faker<T> Apply(Faker<T> faker);
     }
 }

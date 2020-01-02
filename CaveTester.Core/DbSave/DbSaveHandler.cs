@@ -16,9 +16,10 @@ namespace CaveTester.Core.DbSave
         /// </summary>
         /// <param name="save">The save to add</param>
         /// <param name="id">The save id, if null save.Name is used</param>
-        public void Add([NotNull] IDbSave save, string id = null)
+        [PublicAPI] 
+        public void Add(IDbSave save, string? id = default)
         {
-            id = id ?? save.Name;
+            id ??= save.Name;
             if (_databases.ContainsKey(id))
                 return ;
 
@@ -34,9 +35,10 @@ namespace CaveTester.Core.DbSave
         /// </summary>
         /// <param name="save">The save to add</param>
         /// <param name="id">The save id, if null save.Name is used</param>
-        public async Task AddAsync([NotNull] IDbSave save, string id = null)
+        [PublicAPI]
+        public async Task AddAsync(IDbSave save, string? id = null)
         {
-            id = id ?? save.Name;
+            id ??= save.Name;
             if (_databases.ContainsKey(id))
                 return ;
 
@@ -50,29 +52,34 @@ namespace CaveTester.Core.DbSave
         /// Restore a save
         /// </summary>
         /// <param name="id">The id of the save to restore</param>
-        public void Restore([NotNull] string id) => _databases[id].Restore();
+        [PublicAPI]
+        public void Restore(string id) => _databases[id].Restore();
 
         /// <summary>
         /// Restore a save
         /// </summary>
         /// <param name="id">The id of the save to restore</param>
-        public Task RestoreAsync([NotNull] string id) => _databases[id].RestoreAsync();
+        [PublicAPI]
+        public Task RestoreAsync(string id) => _databases[id].RestoreAsync();
 
         /// <summary>
         /// Restore a save
         /// Equivalent to <c>Restore(save, connection.ConnectionString)</c>
         /// </summary>
-        public void Restore([NotNull] IDbConnection connection) => Restore(connection.ConnectionString);
+        [PublicAPI]
+        public void Restore(IDbConnection connection) => Restore(connection.ConnectionString);
 
         /// <summary>
         /// Restore a save
         /// Equivalent to <c>RestoreAsync(save, connection.ConnectionString)</c>
         /// </summary>
-        public Task RestoreAsync([NotNull] IDbConnection connection) => RestoreAsync(connection.ConnectionString);
+        [PublicAPI]
+        public Task RestoreAsync(IDbConnection connection) => RestoreAsync(connection.ConnectionString);
 
         /// <summary>
         /// Restore all saves
         /// </summary>
+        [PublicAPI]
         public void RestoreAll()
         {
             foreach (var save in _databases.Values)
@@ -82,6 +89,7 @@ namespace CaveTester.Core.DbSave
         /// <summary>
         /// Restore all saves
         /// </summary>
+        [PublicAPI]
         public Task RestoreAllAsync()
         {
             var tasks = new Task[_databases.Values.Count];
@@ -96,7 +104,8 @@ namespace CaveTester.Core.DbSave
         /// Delete a save
         /// </summary>
         /// <param name="id">The id of the save to restore</param>
-        public void Delete([NotNull] string id)
+        [PublicAPI]
+        public void Delete(string id)
         {
             _databases[id].Delete();
             _databases.Remove(id);
@@ -106,7 +115,8 @@ namespace CaveTester.Core.DbSave
         /// Delete a save
         /// </summary>
         /// <param name="id">The id of the save to restore</param>
-        public async Task DeleteAsync([NotNull] string id)
+        [PublicAPI]
+        public async Task DeleteAsync(string id)
         {
             await _databases[id].DeleteAsync();
             _databases.Remove(id);
@@ -116,17 +126,20 @@ namespace CaveTester.Core.DbSave
         /// Delete a save
         /// Equivalent to <c>Delete(save, connection.ConnectionString)</c>
         /// </summary>
-        public void Delete([NotNull] IDbConnection connection) => Delete(connection.ConnectionString);
+        [PublicAPI]
+        public void Delete(IDbConnection connection) => Delete(connection.ConnectionString);
 
         /// <summary>
         /// Delete a save
         /// Equivalent to <c>DeleteAsync(save, connection.ConnectionString)</c>
         /// </summary>
-        public Task DeleteAsync([NotNull] IDbConnection connection) => DeleteAsync(connection.ConnectionString);
+        [PublicAPI]
+        public Task DeleteAsync(IDbConnection connection) => DeleteAsync(connection.ConnectionString);
 
         /// <summary>
         /// Delete all saves
         /// </summary>
+        [PublicAPI]
         public void DeleteAll()
         {
             foreach (var save in _databases.Values)
@@ -138,6 +151,7 @@ namespace CaveTester.Core.DbSave
         /// <summary>
         /// Delete all saves
         /// </summary>
+        [PublicAPI]
         public async Task DeleteAllAsync()
         {
             var tasks = new Task[_databases.Values.Count];

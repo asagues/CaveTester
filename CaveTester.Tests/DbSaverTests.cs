@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CaveTester.Core.DbSave;
 using FluentAssertions;
-using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
@@ -42,7 +41,7 @@ namespace CaveTester.Tests
     {
         public DbSet<Turret> Turrets { get; set; }
 
-        public TestContext([NotNull] DbContextOptions options)
+        public TestContext(DbContextOptions options)
             : base(options)
         { }
 

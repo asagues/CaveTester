@@ -1,13 +1,15 @@
 using System;
 using Bogus;
 using CaveTester.Bogus.RuleSet;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace CaveTester.Bogus.Database
 {
+    [PublicAPI]
     public static class DbContextExtensions
     {
-        public static DbContext Generate<T>(this DbContext dbContext, int quantity = 1, Action<Faker, T> rules = null, Action<Faker<T>> config = null)
+        public static DbContext Generate<T>(this DbContext dbContext, int quantity = 1, Action<Faker, T>? rules = null, Action<Faker<T>>? config = null)
             where T : class
         {
             if (quantity <= 0)

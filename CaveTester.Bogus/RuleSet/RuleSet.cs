@@ -1,5 +1,6 @@
 ﻿using System.Reflection;
 using Bogus;
+using JetBrains.Annotations;
 
 namespace CaveTester.Bogus.RuleSet
 {
@@ -7,6 +8,7 @@ namespace CaveTester.Bogus.RuleSet
     /// Setup rules set to generate objects with Faker
     /// To use, inherit this class and implement <see cref="IRulesFor{T}"/> for each type
     /// </summary>
+    [PublicAPI]
     public class RuleSet : IRuleSet
     {
         /// <summary>
