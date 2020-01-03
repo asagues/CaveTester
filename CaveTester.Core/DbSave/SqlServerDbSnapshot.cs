@@ -61,43 +61,43 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public void Create()
         {
-            _database.ExecuteSqlCommand($"CREATE DATABASE {SnapshotName} ON\r\n"
-                                        + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
-                                        + $"AS SNAPSHOT OF {_databaseName};\r\n");
+            _database.ExecuteSqlRaw($"CREATE DATABASE {SnapshotName} ON\r\n"
+                                    + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
+                                    + $"AS SNAPSHOT OF {_databaseName};\r\n");
         }
 
         /// <inheritdoc />
         public Task CreateAsync()
         {
-            return _database.ExecuteSqlCommandAsync($"CREATE DATABASE {SnapshotName} ON\r\n"
-                                                    + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
-                                                    + $"AS SNAPSHOT OF {_databaseName};\r\n");
+            return _database.ExecuteSqlRawAsync($"CREATE DATABASE {SnapshotName} ON\r\n"
+                                                + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
+                                                + $"AS SNAPSHOT OF {_databaseName};\r\n");
         }
 
         /// <inheritdoc />
         public void Restore()
         {
-            _database.ExecuteSqlCommand("USE MASTER;\r\n"
-                                        + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
-                                        + $"RESTORE DATABASE {_databaseName} FROM\r\n"
-                                        + $"DATABASE_SNAPSHOT = '{SnapshotName}';\r\n"
-                                        + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+            _database.ExecuteSqlRaw("USE MASTER;\r\n"
+                                    + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
+                                    + $"RESTORE DATABASE {_databaseName} FROM\r\n"
+                                    + $"DATABASE_SNAPSHOT = '{SnapshotName}';\r\n"
+                                    + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
         }
 
         /// <inheritdoc />
         public Task RestoreAsync()
         {
-            return _database.ExecuteSqlCommandAsync("USE MASTER;\r\n"
-                                                    + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
-                                                    + $"RESTORE DATABASE {_databaseName} FROM\r\n"
-                                                    + $"DATABASE_SNAPSHOT = '{SnapshotName}';\r\n"
-                                                    + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+            return _database.ExecuteSqlRawAsync("USE MASTER;\r\n"
+                                                + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
+                                                + $"RESTORE DATABASE {_databaseName} FROM\r\n"
+                                                + $"DATABASE_SNAPSHOT = '{SnapshotName}';\r\n"
+                                                + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
         }
 
         /// <inheritdoc />
         public void Delete()
         {
-            _database.ExecuteSqlCommand("DROP DATABASE " + SnapshotName);
+            _database.ExecuteSqlRaw("DROP DATABASE " + SnapshotName);
 
             if (File.Exists(SnapshotPath))
                 File.Delete(SnapshotPath); // delete orphan snapshot file
@@ -106,7 +106,7 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public async Task DeleteAsync()
         {
-            await _database.ExecuteSqlCommandAsync("DROP DATABASE " + SnapshotName);
+            await _database.ExecuteSqlRawAsync("DROP DATABASE " + SnapshotName);
 
             if (File.Exists(SnapshotPath))
                 File.Delete(SnapshotPath); // delete orphan snapshot file

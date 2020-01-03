@@ -61,31 +61,31 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public void Create()
         {
-            _database.ExecuteSqlCommand(CreateBackupSql);
+            _database.ExecuteSqlRaw(CreateBackupSql);
         }
 
         /// <inheritdoc />
         public Task CreateAsync()
         {
-            return _database.ExecuteSqlCommandAsync(CreateBackupSql);
+            return _database.ExecuteSqlRawAsync(CreateBackupSql);
         }
 
         /// <inheritdoc />
         public void Restore()
         {
-            _database.ExecuteSqlCommand(RestoreBackupSql);
+            _database.ExecuteSqlRaw(RestoreBackupSql);
         }
 
         /// <inheritdoc />
         public Task RestoreAsync()
         {
-            return _database.ExecuteSqlCommandAsync(RestoreBackupSql);
+            return _database.ExecuteSqlRawAsync(RestoreBackupSql);
         }
 
         /// <inheritdoc />
         public void Delete()
         {
-            _database.ExecuteSqlCommand(DeleteBackupSql);
+            _database.ExecuteSqlRaw(DeleteBackupSql);
 
             if (File.Exists(Path))
                 File.Delete(Path); // delete orphan backup file
@@ -94,7 +94,7 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public async Task DeleteAsync()
         {
-            await _database.ExecuteSqlCommandAsync(DeleteBackupSql);
+            await _database.ExecuteSqlRawAsync(DeleteBackupSql);
 
             if (File.Exists(Path))
                 File.Delete(Path); // delete orphan backup file
