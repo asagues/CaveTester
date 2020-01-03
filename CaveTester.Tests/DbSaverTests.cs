@@ -19,7 +19,7 @@ namespace CaveTester.Tests
             var context = new TestContext(dbContextOptions.Options);
             context.Database.EnsureCreated();
 
-            var save = new SqlServerDbSnapshot(context.Database);
+            var save = new RespawnDbSave(context.Database);
             await save.InitializeAsync();
             await save.CreateAsync();
 
