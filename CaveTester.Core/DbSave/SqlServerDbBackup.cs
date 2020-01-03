@@ -61,42 +61,31 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public void Create()
         {
-            _database.ExecuteSqlCommand($"USE {_databaseName};"
-                                        + $"BACKUP DATABASE {_databaseName} TO DISK = '{Path}' "
-                                        + $"WITH FORMAT, MEDIANAME = 'Z_SQLServerBackups', NAME = '{BackupName}';");
+            _database.ExecuteSqlCommand(CreateBackupSql);
         }
 
         /// <inheritdoc />
         public Task CreateAsync()
         {
-            return _database.ExecuteSqlCommandAsync($"USE {_databaseName};"
-                                                    + $"BACKUP DATABASE {_databaseName} TO DISK = '{Path}' "
-                                                    + $"WITH FORMAT, MEDIANAME = 'Z_SQLServerBackups', NAME = '{BackupName}';");
+            return _database.ExecuteSqlCommandAsync(CreateBackupSql);
         }
 
         /// <inheritdoc />
         public void Restore()
         {
-            _database.ExecuteSqlCommand("USE MASTER;\r\n"
-                                        + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
-                                        + $"RESTORE DATABASE {_databaseName} FROM DISK = '{Path}'"
-                                        + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+            _database.ExecuteSqlCommand(RestoreBackupSql);
         }
 
         /// <inheritdoc />
         public Task RestoreAsync()
         {
-            return _database.ExecuteSqlCommandAsync("USE MASTER;\r\n"
-                                                    + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
-                                                    + $"RESTORE DATABASE {_databaseName} FROM DISK = '{Path}'"
-                                                    + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+            return _database.ExecuteSqlCommandAsync(RestoreBackupSql);
         }
 
         /// <inheritdoc />
         public void Delete()
         {
-            _database.ExecuteSqlCommand($"IF EXISTS(select * from sys.databases where name='{BackupName}') "
-                                        + $"DROP DATABASE {BackupName}");
+            _database.ExecuteSqlCommand(DeleteBackupSql);
 
             if (File.Exists(Path))
                 File.Delete(Path); // delete orphan backup file
@@ -105,11 +94,21 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public async Task DeleteAsync()
         {
-            await _database.ExecuteSqlCommandAsync($"IF EXISTS(select * from sys.databases where name='{BackupName}') "
-                                                   + $"DROP DATABASE {BackupName}");
+            await _database.ExecuteSqlCommandAsync(DeleteBackupSql);
 
             if (File.Exists(Path))
                 File.Delete(Path); // delete orphan backup file
         }
+
+        private string CreateBackupSql => "USE master;"
+                                          + $"ALTER DATABASE {_databaseName} SET RECOVERY SIMPLE;"
+                                          + $"BACKUP DATABASE {_databaseName} TO DISK = '{Path}' "
+                                          + $"WITH FORMAT, NAME = '{BackupName}';";
+        private string RestoreBackupSql => "USE MASTER;"
+                                           + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
+                                           + $"RESTORE DATABASE {_databaseName} FROM DISK = '{Path}' WITH REPLACE;"
+                                           + $"ALTER DATABASE {_databaseName} SET MULTI_USER;";
+        private string DeleteBackupSql => $"IF EXISTS(select * from sys.databases where name='{BackupName}') "
+                                          + $"DROP DATABASE {BackupName}";
     }
 }
