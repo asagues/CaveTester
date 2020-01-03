@@ -20,4 +20,8 @@
     <ProjectReference Include="..\CaveTester.Core\CaveTester.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DbSave\" />
+  </ItemGroup>
+
 </Project>

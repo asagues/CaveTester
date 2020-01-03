@@ -1,4 +1,3 @@
-using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using CaveTester.Core.DbSave;
 using FluentAssertions;
@@ -10,11 +9,11 @@ namespace CaveTester.Tests
     public class DbSaveTests
     {
         [Fact]
-        public async Task ShouldSaveAndRestoreDatabase()
+        public async Task ShouldSaveAndRestoreWithRespawn()
         {
             var dbContextOptions = new DbContextOptionsBuilder<TestContext>()
                 .EnableSensitiveDataLogging()
-                .UseSqlServer("Server=(localdb)\\CaveTester;Database=CaveTester;Trusted_Connection=True;MultipleActiveResultSets=true");
+                .UseSqlServer("Server=localhost;Database=tests;Trusted_Connection=True;");
 
             var context = new TestContext(dbContextOptions.Options);
             context.Database.EnsureCreated();
@@ -33,26 +32,64 @@ namespace CaveTester.Tests
             var results = await context.Turrets.ToListAsync();
 
             results.Should().BeEmpty();
+
+            await save.DeleteAsync();
         }
-    }
 
-    //TODO move
-    public class TestContext : DbContext
-    {
-        public DbSet<Turret> Turrets { get; set; }
+        [Fact]
+        public async Task ShouldSaveAndRestoreWithBackup()
+        {
+            var dbContextOptions = new DbContextOptionsBuilder<TestContext>()
+                .EnableSensitiveDataLogging()
+                .UseSqlServer("Server=localhost;Database=tests;Trusted_Connection=True;");
 
-        public TestContext(DbContextOptions options)
-            : base(options)
-        { }
+            var context = new TestContext(dbContextOptions.Options);
+            context.Database.EnsureCreated();
 
-        protected override void OnModelCreating(ModelBuilder builder)
-        { }
-    }
+            var save = new SqlServerDbBackup(context.Database, "C:\\Temp");
+            await save.InitializeAsync();
+            await save.CreateAsync();
 
-    //TODO move
-    public class Turret
-    {
-        [Required] public int Id { get; set; }
-        [Required] public bool IsDefective { get; set; }
+            var entity = new Turret { IsDefective = true, };
+
+            await context.Turrets.AddAsync(entity);
+            await context.SaveChangesAsync();
+
+            await save.RestoreAsync();
+
+            var results = await context.Turrets.ToListAsync();
+
+            results.Should().BeEmpty();
+
+            await save.DeleteAsync();
+        }
+
+        [Fact]
+        public async Task ShouldSaveAndRestoreSnapshot()
+        {
+            var dbContextOptions = new DbContextOptionsBuilder<TestContext>()
+                .EnableSensitiveDataLogging()
+                .UseSqlServer("Server=localhost;Database=tests;Trusted_Connection=True;");
+
+            var context = new TestContext(dbContextOptions.Options);
+            context.Database.EnsureCreated();
+
+            var save = new SqlServerDbSnapshot(context.Database, "C:\\Temp");
+            await save.InitializeAsync();
+            await save.CreateAsync();
+
+            var entity = new Turret { IsDefective = true, };
+
+            await context.Turrets.AddAsync(entity);
+            await context.SaveChangesAsync();
+
+            await save.RestoreAsync();
+
+            var results = await context.Turrets.ToListAsync();
+
+            results.Should().BeEmpty();
+
+            await save.DeleteAsync();
+        }
     }
 }
