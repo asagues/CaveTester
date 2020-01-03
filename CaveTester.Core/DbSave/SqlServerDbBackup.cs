@@ -20,11 +20,11 @@ namespace CaveTester.Core.DbSave
         private string BackupName => _databaseName + "_backup";
         private string Path => System.IO.Path.Combine(_directory, _databaseName + ".bak");
 
-        public SqlServerDbBackup(DatabaseFacade database)
+        public SqlServerDbBackup(DatabaseFacade database, string? saveDirectory = null)
         {
             _database = database;
             _databaseName = database.GetDbConnection().Database;
-            _directory = Directory.GetCurrentDirectory();
+            _directory = saveDirectory ?? Directory.GetCurrentDirectory();
             Name = database.GetDbConnection().DataSource;
         }
 

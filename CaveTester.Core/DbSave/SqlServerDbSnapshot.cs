@@ -20,11 +20,11 @@ namespace CaveTester.Core.DbSave
         private string SnapshotName => _databaseName + "_snapshot";
         private string SnapshotPath => Path.Combine(_snapshotDirectory, _databaseName + ".ss");
 
-        public SqlServerDbSnapshot(DatabaseFacade database)
+        public SqlServerDbSnapshot(DatabaseFacade database, string? saveDirectory = null)
         {
             _database = database;
             _databaseName = database.GetDbConnection().Database;
-            _snapshotDirectory = Directory.GetCurrentDirectory();
+            _snapshotDirectory = saveDirectory ?? Directory.GetCurrentDirectory();
             Name = database.GetDbConnection().DataSource;
         }
 
