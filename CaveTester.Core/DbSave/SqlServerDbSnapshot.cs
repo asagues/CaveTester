@@ -27,37 +27,8 @@ namespace CaveTester.Core.DbSave
             _snapshotDirectory = saveDirectory ?? Directory.GetCurrentDirectory();
             Name = database.GetDbConnection().DataSource;
         }
-
-        /// <inheritdoc />
-        public void Initialize()
-        {
-            //Try to restore from snapshot to ensure the database is in a clean state, then delete it
-            try
-            {
-                Restore();
-                Delete();
-            }
-            catch (SqlException)
-            {
-                //Exceptions are expected when there is not snapshot to restore
-            }
         }
-
-        /// <inheritdoc />
-        public async Task InitializeAsync()
-        {
-            //Try to restore from snapshot to ensure the database is in a clean state, then delete it
-            try
-            {
-                await RestoreAsync();
-                await DeleteAsync();
-            }
-            catch (SqlException)
-            {
-                //Exceptions are expected when there is not snapshot to restore
-            }
-        }
-
+        
         /// <inheritdoc />
         public void Create()
         {

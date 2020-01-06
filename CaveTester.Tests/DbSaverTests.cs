@@ -19,7 +19,6 @@ namespace CaveTester.Tests
             context.Database.EnsureCreated();
 
             var save = new RespawnDbSave(context.Database);
-            await save.InitializeAsync();
             await save.CreateAsync();
 
             var entity = new Turret { IsDefective = true, };
@@ -47,7 +46,6 @@ namespace CaveTester.Tests
             context.Database.EnsureCreated();
 
             var save = new SqlServerDbBackup(context.Database, "C:\\Temp");
-            await save.InitializeAsync();
             await save.CreateAsync();
 
             var entity = new Turret { IsDefective = true, };
@@ -75,7 +73,6 @@ namespace CaveTester.Tests
             context.Database.EnsureCreated();
 
             var save = new SqlServerDbSnapshot(context.Database, "C:\\Temp");
-            await save.InitializeAsync();
             await save.CreateAsync();
 
             var entity = new Turret { IsDefective = true, };

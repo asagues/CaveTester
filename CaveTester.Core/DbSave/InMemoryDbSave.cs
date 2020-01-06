@@ -16,12 +16,6 @@ namespace CaveTester.Core.DbSave
         public string Name { get; }
 
         /// <inheritdoc />
-        public void Initialize() { }
-
-        /// <inheritdoc />
-        public Task InitializeAsync() => Task.CompletedTask;
-
-        /// <inheritdoc />
         public void Create() { }
 
         /// <inheritdoc />

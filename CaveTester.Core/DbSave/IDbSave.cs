@@ -10,14 +10,6 @@ namespace CaveTester.Core.DbSave
         string Name { get; }
 
         /// <summary>
-        /// If there is a save, restore and then delete it. This is needed because leftover save usually mean a test was interrupted and might have left the database in a dirty state
-        /// </summary>
-        void Initialize();
-        /// <summary>
-        /// If there is a save, restore and then delete it. This is needed because leftover save usually mean a test was interrupted and might have left the database in a dirty state
-        /// </summary>
-        Task InitializeAsync();
-        /// <summary>
         /// Create a new save
         /// </summary>
         void Create();

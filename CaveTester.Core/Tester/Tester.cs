@@ -7,8 +7,20 @@ namespace CaveTester.Core.Tester
     [PublicAPI]
     public abstract class Tester : IDisposable
     {
+        protected static readonly DbSaveHandler SaveHandler = new DbSaveHandler();
         protected readonly IdGenerator IdGenerator = new IdGenerator();
-        protected readonly DbSaveHandler SaveHandler = new DbSaveHandler();
+
+        static Tester()
+        {
+            AppDomain.CurrentDomain.DomainUnload += delegate
+            {
+                SaveHandler.DeleteAll();
+            };
+            AppDomain.CurrentDomain.ProcessExit += delegate
+            {
+                SaveHandler.DeleteAll();
+            };
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -16,7 +28,6 @@ namespace CaveTester.Core.Tester
             {
                 IdGenerator.Reset();
                 SaveHandler.RestoreAll();
-                SaveHandler.DeleteAll();
             }
         }
 

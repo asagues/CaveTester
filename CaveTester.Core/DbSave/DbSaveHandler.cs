@@ -23,7 +23,6 @@ namespace CaveTester.Core.DbSave
             if (_databases.ContainsKey(id))
                 return ;
 
-            save.Initialize();
             save.Create();
 
             _databases.Add(id, save);
@@ -42,7 +41,6 @@ namespace CaveTester.Core.DbSave
             if (_databases.ContainsKey(id))
                 return ;
 
-            await save.InitializeAsync();
             await save.CreateAsync();
 
             _databases.Add(id, save);
