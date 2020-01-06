@@ -25,8 +25,7 @@ namespace CaveTester.Core.DbSave
             _database = database;
             _databaseName = database.GetDbConnection().Database;
             _snapshotDirectory = saveDirectory ?? Directory.GetCurrentDirectory();
-            Name = database.GetDbConnection().DataSource;
-        }
+            Name = database.GetDbConnection().ConnectionString;
         }
         
         /// <inheritdoc />

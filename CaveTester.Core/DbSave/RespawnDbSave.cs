@@ -16,7 +16,7 @@ namespace CaveTester.Core.DbSave
         public RespawnDbSave(DatabaseFacade database)
         {
             _connectionString = database.GetDbConnection().ConnectionString;
-            Name = database.GetDbConnection().DataSource;
+            Name = database.GetDbConnection().ConnectionString;
         }
 
         public string Name { get; }
