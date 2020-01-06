@@ -61,43 +61,31 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public void Create()
         {
-            _database.ExecuteSqlCommand($"CREATE DATABASE {SnapshotName} ON\r\n"
-                                        + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
-                                        + $"AS SNAPSHOT OF {_databaseName};\r\n");
+            _database.ExecuteSqlCommand(CreateSnapshotSql);
         }
 
         /// <inheritdoc />
         public Task CreateAsync()
         {
-            return _database.ExecuteSqlCommandAsync($"CREATE DATABASE {SnapshotName} ON\r\n"
-                                                    + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )\r\n"
-                                                    + $"AS SNAPSHOT OF {_databaseName};\r\n");
+            return _database.ExecuteSqlCommandAsync(CreateSnapshotSql);
         }
 
         /// <inheritdoc />
         public void Restore()
         {
-            _database.ExecuteSqlCommand("USE MASTER;\r\n"
-                                        + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
-                                        + $"RESTORE DATABASE {_databaseName} FROM\r\n"
-                                        + $"DATABASE_SNAPSHOT = '{SnapshotName}';\r\n"
-                                        + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+            _database.ExecuteSqlCommand(RestoreSnapshotSql);
         }
 
         /// <inheritdoc />
         public Task RestoreAsync()
         {
-            return _database.ExecuteSqlCommandAsync("USE MASTER;\r\n"
-                                                    + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;\r\n"
-                                                    + $"RESTORE DATABASE {_databaseName} FROM\r\n"
-                                                    + $"DATABASE_SNAPSHOT = '{SnapshotName}';\r\n"
-                                                    + $"ALTER DATABASE {_databaseName} SET MULTI_USER;\r\n");
+            return _database.ExecuteSqlCommandAsync(RestoreSnapshotSql);
         }
 
         /// <inheritdoc />
         public void Delete()
         {
-            _database.ExecuteSqlCommand("DROP DATABASE " + SnapshotName);
+            _database.ExecuteSqlCommand(DeleteSnapshotSql);
 
             if (File.Exists(SnapshotPath))
                 File.Delete(SnapshotPath); // delete orphan snapshot file
@@ -106,10 +94,20 @@ namespace CaveTester.Core.DbSave
         /// <inheritdoc />
         public async Task DeleteAsync()
         {
-            await _database.ExecuteSqlCommandAsync("DROP DATABASE " + SnapshotName);
+            await _database.ExecuteSqlCommandAsync(DeleteSnapshotSql);
 
             if (File.Exists(SnapshotPath))
                 File.Delete(SnapshotPath); // delete orphan snapshot file
         }
+
+        private string CreateSnapshotSql => $"CREATE DATABASE {SnapshotName} ON"
+                                            + $"( NAME = {_databaseName}, FILENAME = '{SnapshotPath}' )"
+                                            + $"AS SNAPSHOT OF {_databaseName};";
+        private string RestoreSnapshotSql => "USE MASTER;"
+                                             + $"ALTER DATABASE {_databaseName} SET SINGLE_USER WITH ROLLBACK IMMEDIATE;"
+                                             + $"RESTORE DATABASE {_databaseName} FROM DATABASE_SNAPSHOT = '{SnapshotName}';"
+                                             + $"ALTER DATABASE {_databaseName} SET MULTI_USER;";
+
+        private string DeleteSnapshotSql => $"DROP DATABASE {SnapshotName}";
     }
 }

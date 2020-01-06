@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using Bogus;
 using JetBrains.Annotations;
 
@@ -29,10 +30,15 @@ namespace CaveTester.Bogus.RuleSet
             where T : class
             => faker;
 
-        protected object InvokeGenericMethod<T>(string methodName, Faker<T> faker, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)
+        private object InvokeGenericMethod<T>(string methodName, Faker<T> faker, BindingFlags bindingFlags = BindingFlags.Instance | BindingFlags.NonPublic)
             where T : class
-            => GetType().GetMethod(methodName, bindingFlags)
-                        .MakeGenericMethod(typeof(T))
-                        .Invoke(this, new object[] { faker });
+        {
+            var method = GetType().GetMethod(methodName, bindingFlags);
+            if (method == null)
+                throw new MissingMethodException(nameof(RuleSet), nameof(methodName));
+
+            return method.MakeGenericMethod(typeof(T))
+                .Invoke(this, new object[] {faker});
+        }
     }
 }
