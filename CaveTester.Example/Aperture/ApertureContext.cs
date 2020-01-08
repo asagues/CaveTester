@@ -7,7 +7,7 @@ namespace CaveTester.Example.Aperture
     {
         public DbSet<Turret> Turrets { get; set; }
 
-        public ApertureContext([NotNull] DbContextOptions options)
+        public ApertureContext([NotNull] DbContextOptions<ApertureContext> options)
             : base(options)
         { }
 
