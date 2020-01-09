@@ -1,6 +1,9 @@
 using System;
+using System.IO;
+using System.Text.Json;
 using CaveTester.Core.DbSave;
 using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace CaveTester.Core.Tester
 {
@@ -9,6 +12,7 @@ namespace CaveTester.Core.Tester
     {
         protected static readonly DbSaveHandler SaveHandler = new DbSaveHandler();
         protected readonly IdGenerator IdGenerator = new IdGenerator();
+        protected readonly Database Database;
 
         static Tester()
         {
@@ -20,6 +24,23 @@ namespace CaveTester.Core.Tester
             {
                 SaveHandler.DeleteAll();
             };
+        }
+
+        protected Tester(string? configPath = null)
+        {
+            var rawConfig = File.ReadAllText(configPath ?? "appsettings.json");
+            Database = JsonSerializer.Deserialize<AppSettings>(rawConfig).Cycle.Database;
+        }
+
+        protected Tester(AppSettings.CycleSettings settings)
+        {
+            Database = settings.Database;
+        }
+
+        protected DbContextBuilder<TContext> AddContext<TContext>()
+            where TContext : DbContext
+        {
+            return new DbContextBuilder<TContext>(Database);
         }
 
         protected virtual void Dispose(bool disposing)

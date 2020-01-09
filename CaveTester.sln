@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2003
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaveTester.Tests", "CaveTester.Tests\CaveTester.Tests.csproj", "{2E3DF5C2-8A38-4A03-86D7-8D463C917E47}"
 EndProject
@@ -16,6 +16,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaveTester.Bogus", "CaveTester.Bogus\CaveTester.Bogus.csproj", "{DE19D6C0-8705-4C34-AF07-D5FAA1BF4BF5}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaveTester.Core", "CaveTester.Core\CaveTester.Core.csproj", "{0C01A767-B1E9-4F2B-A628-7D29533CB6E3}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CaveTester.SqlServer", "CaveTester.SqlServer\CaveTester.SqlServer.csproj", "{E77D160E-3A11-480A-9A79-A8EDD87D5FCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CaveTester.InMemory", "CaveTester.InMemory\CaveTester.InMemory.csproj", "{B5BD9137-CB37-4A59-B33B-BAFC06A2F9E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{0C01A767-B1E9-4F2B-A628-7D29533CB6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C01A767-B1E9-4F2B-A628-7D29533CB6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C01A767-B1E9-4F2B-A628-7D29533CB6E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E77D160E-3A11-480A-9A79-A8EDD87D5FCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E77D160E-3A11-480A-9A79-A8EDD87D5FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E77D160E-3A11-480A-9A79-A8EDD87D5FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E77D160E-3A11-480A-9A79-A8EDD87D5FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5BD9137-CB37-4A59-B33B-BAFC06A2F9E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5BD9137-CB37-4A59-B33B-BAFC06A2F9E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5BD9137-CB37-4A59-B33B-BAFC06A2F9E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5BD9137-CB37-4A59-B33B-BAFC06A2F9E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2,7 +2,8 @@ using CaveTester.Bogus.RuleSet;
 using CaveTester.Core.DbSave;
 using CaveTester.Core.Tester;
 using CaveTester.Example.Aperture;
-using Microsoft.EntityFrameworkCore;
+using CaveTester.InMemory;
+using CaveTester.SqlServer;
 
 namespace CaveTester.Example
 {
@@ -12,11 +13,11 @@ namespace CaveTester.Example
 
         protected ApertureTester()
         {
-            var dbContextOptions = new DbContextOptionsBuilder<ApertureContext>()
-                .EnableSensitiveDataLogging()
-                .UseSqlServer("Server=(localdb)\\CaveTester;Database=tests;Trusted_Connection=True;MultipleActiveResultSets=true");
+            Context = AddContext<ApertureContext>()
+                      .WithSqlServer()
+                      .WithInMemory()
+                      .Build();
 
-            Context = new ApertureContext(dbContextOptions.Options);
 
             //Save the database
             //The database will automatically be restored from this save when the test end
