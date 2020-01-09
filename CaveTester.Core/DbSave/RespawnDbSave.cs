@@ -22,7 +22,7 @@ namespace CaveTester.Core.DbSave
         public string Name { get; }
         
         /// <inheritdoc />
-        public void Create() => CreateAsync().RunSynchronously();
+        public void Create() => CreateAsync().Wait();
 
         /// <inheritdoc />
         public Task CreateAsync()
@@ -33,7 +33,7 @@ namespace CaveTester.Core.DbSave
         }
 
         /// <inheritdoc />
-        public void Restore() => RestoreAsync().RunSynchronously();
+        public void Restore() => RestoreAsync().Wait();
 
         /// <inheritdoc />
         public async Task RestoreAsync()
