@@ -5,13 +5,14 @@ namespace CaveTester.SqlServer
 {
     public static class DbContextBuilderExtensions
     {
-        public static DbContextBuilder<TContext> WithSqlServer<TContext>(this DbContextBuilder<TContext> builder, DbContextBuilder<TContext>.OptionBuilder optionsBuilder = null)
+        public static DbContextBuilder<TContext> WithSqlServer<TContext>(this DbContextBuilder<TContext> builder, DbContextBuilder<TContext>.OptionBuilder? optionsBuilder = null)
             where TContext : DbContext
         {
-            var b = optionsBuilder == null
-                        ? (DbContextBuilder<TContext>.OptionBuilder)((o, connectionString) => o.UseSqlServer(connectionString))
-                        : (o, connectionString) => optionsBuilder(o.UseSqlServer(connectionString), connectionString);
-            builder.With("SqlServer", b);
+            var sqlBuilder = (DbContextBuilder<TContext>.OptionBuilder) ((o, connectionString) => o.UseSqlServer(connectionString));
+
+            optionsBuilder += sqlBuilder;
+
+            builder.With("SqlServer", optionsBuilder);
 
             return builder;
         }
